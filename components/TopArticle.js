@@ -33,7 +33,11 @@ function TopArticle(props) {
 
   return (
     <div className={styles.topContainer}>
-      <img src={props.urlToImage} className={styles.image} alt={props.title} />
+      <img
+        src="https://duet-cdn.vox-cdn.com/thumbor/0x0:2880x1602/1200x960/filters:focal(1798x742:1799x743):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/24609856/Screen_Shot_2023_04_25_at_12.09.31_PM.png"
+        className={styles.image}
+        alt={props.title}
+      />
       <div className={styles.topText}>
         <h2 className={styles.topTitle}>{props.title}</h2>
         <FontAwesomeIcon
