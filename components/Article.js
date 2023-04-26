@@ -56,7 +56,7 @@ function Article(props) {
       <h4 style={{ textAlign: "right" }}>- {props.author}</h4>
       <div className={styles.divider}></div>
       <Image
-        src="https://duet-cdn.vox-cdn.com/thumbor/0x0:2880x1602/1200x960/filters:focal(1798x742:1799x743):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/24609856/Screen_Shot_2023_04_25_at_12.09.31_PM.png"
+        src={props.urlToImage}
         alt={props.title}
         width={600}
         height={314}
