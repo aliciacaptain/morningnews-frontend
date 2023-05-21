@@ -1,53 +1,54 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import Head from "next/head";
-import Article from "./Article";
-import TopArticle from "./TopArticle";
-import styles from "../styles/Home.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookmark, removeBookmark } from "../reducers/bookmarks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+import styles from "../styles/TopArticle.module.css";
 
-function Home() {
-  const bookmarks = useSelector((state) => state.bookmarks.value);
-  const hiddenArticles = useSelector((state) => state.hiddenArticles.value);
+function TopArticle(props) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
 
-  const [articlesData, setArticlesData] = useState([]);
-  const [topArticle, setTopArticle] = useState({});
+  const handleBookmarkClick = () => {
+    if (!user.token) {
+      return;
+    }
 
-  useEffect(() => {
-    fetch("https://morningnews-backend-nine.vercel.app/articles/getArticles")
+    fetch(
+      `https://morningnews-backend-nine.vercel.app/users/canBookmark/${user.token}`
+    )
       .then((response) => response.json())
       .then((data) => {
-        setTopArticle(data.articles[0]);
-        setArticlesData(data.articles.filter((data, i) => i > 0));
+        if (data.result && data.canBookmark) {
+          if (props.isBookmarked) {
+            dispatch(removeBookmark(props));
+          } else {
+            dispatch(addBookmark(props));
+          }
+        }
       });
-  }, []);
+  };
 
-  const displayedArticles = articlesData.filter(
-    (data) => !hiddenArticles.includes(data.title)
-  );
-
-  const articles = displayedArticles.map((data, i) => {
-    const isBookmarked = bookmarks.some(
-      (bookmark) => bookmark.title === data.title
-    );
-    return <Article key={i} {...data} isBookmarked={isBookmarked} />;
-  });
-
-  let topArticles;
-  if (bookmarks.some((bookmark) => bookmark.title === topArticle.title)) {
-    topArticles = <TopArticle {...topArticle} isBookmarked={true} />;
-  } else {
-    topArticles = <TopArticle {...topArticle} isBookmarked={false} />;
+  let iconStyle = {};
+  if (props.isBookmarked) {
+    iconStyle = { color: "#E9BE59" };
   }
 
   return (
-    <div>
-      <Head>
-        <title>Morning News - Home</title>
-      </Head>
-      {topArticles}
-      <div className={styles.articlesContainer}>{articles}</div>
+    <div className={styles.topContainer}>
+      <img src={props.urlToImage} className={styles.image} alt={props.title} />
+      <div className={styles.topText}>
+        <h2 className={styles.topTitle}>{props.title}</h2>
+        <FontAwesomeIcon
+          onClick={() => handleBookmarkClick()}
+          icon={faBookmark}
+          style={iconStyle}
+          className={styles.bookmarkIcon}
+        />
+        <h4>{props.author}</h4>
+        <p>{props.description}</p>
+      </div>
     </div>
   );
 }
 
-export default Home;
+export default TopArticle;

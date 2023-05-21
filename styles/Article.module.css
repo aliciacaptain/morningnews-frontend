@@ -25,6 +25,10 @@
   opacity: 0.6;
 }
 
-.hiddenIcon {
+.hideIcon {
   cursor: pointer;
+}
+
+.hideIcon:hover {
+  opacity: 0.6;
 }

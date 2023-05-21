@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import Head from "next/head";
-import styles from "../styles/Bookmarks.module.css";
 import Article from "./Article";
+import styles from "../styles/Bookmarks.module.css";
 
 function Bookmarks() {
   const bookmarks = useSelector((state) => state.bookmarks.value);
@@ -9,7 +9,7 @@ function Bookmarks() {
   let articles = <p>No article</p>;
   if (bookmarks.length > 0) {
     articles = bookmarks.map((data, i) => {
-      return <Article key={i} {...data} isBookmarked />;
+      return <Article key={i} inBookmarks={true} {...data} isBookmarked />;
     });
   }
 

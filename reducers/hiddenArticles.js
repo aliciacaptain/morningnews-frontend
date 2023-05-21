@@ -8,16 +8,14 @@ export const hiddenArticlesSlice = createSlice({
   name: "hiddenArticles",
   initialState,
   reducers: {
-    addHiddenArticles: (state, action) => {
+    hideArticle: (state, action) => {
       state.value.push(action.payload);
-      console.log(action.payload);
     },
-    removeHiddenArticles: (state) => {
+    unhideArticles: (state) => {
       state.value = [];
     },
   },
 });
 
-export const { addHiddenArticles, removeHiddenArticles } =
-  hiddenArticlesSlice.actions;
+export const { hideArticle, unhideArticles } = hiddenArticlesSlice.actions;
 export default hiddenArticlesSlice.reducer;

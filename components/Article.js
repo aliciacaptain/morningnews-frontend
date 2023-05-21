@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addBookmark, removeBookmark } from "../reducers/bookmarks";
-import { addHiddenArticles } from "../reducers/hiddenArticles";
-import Image from "next/image";
-import styles from "../styles/Article.module.css";
+import { hideArticle } from "../reducers/hiddenArticles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
+import styles from "../styles/Article.module.css";
 
 function Article(props) {
   const dispatch = useDispatch();
@@ -28,10 +28,6 @@ function Article(props) {
       });
   };
 
-  const handleHiddenClick = () => {
-    dispatch(addHiddenArticles(props.title));
-  };
-
   let iconStyle = {};
   if (props.isBookmarked) {
     iconStyle = { color: "#E9BE59" };
@@ -47,11 +43,13 @@ function Article(props) {
           style={iconStyle}
           className={styles.bookmarkIcon}
         />
-        <FontAwesomeIcon
-          onClick={() => handleHiddenClick()}
-          icon={faEyeSlash}
-          className={styles.hiddenIcon}
-        />
+        {props.inBookmarks || (
+          <FontAwesomeIcon
+            icon={faEyeSlash}
+            onClick={() => dispatch(hideArticle(props.title))}
+            className={styles.hideIcon}
+          />
+        )}
       </div>
       <h4 style={{ textAlign: "right" }}>- {props.author}</h4>
       <div className={styles.divider}></div>
